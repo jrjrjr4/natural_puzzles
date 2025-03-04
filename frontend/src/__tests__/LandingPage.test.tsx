@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import Home from '../pages/Home'
-import { AuthProvider } from '../context/AuthContext'
+import { AuthProvider } from '../context/AuthContext.tsx'
+import { SupabaseClient } from '@supabase/supabase-js'
 
 // Mock the useAuth hook
-jest.mock('../context/AuthContext', () => ({
-  ...jest.requireActual('../context/AuthContext'),
+jest.mock('../context/AuthContext.tsx', () => ({
+  ...jest.requireActual('../context/AuthContext.tsx'),
   useAuth: () => ({
     user: null,
     supabase: {
@@ -21,7 +22,7 @@ describe('Landing Page', () => {
   beforeEach(() => {
     render(
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AuthProvider value={{ user: null, supabase: {} as any }}>
+        <AuthProvider value={{ user: null, supabase: {} as SupabaseClient }}>
           <Home />
         </AuthProvider>
       </BrowserRouter>

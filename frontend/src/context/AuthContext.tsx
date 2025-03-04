@@ -1,12 +1,12 @@
 import { createContext, useContext, ReactNode } from 'react'
 import { SupabaseClient, User } from '@supabase/supabase-js'
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null
   supabase: SupabaseClient
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ 
   children, 
