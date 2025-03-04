@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "name": "Project Structure",
+      "pattern": "**/*",
+      "include": [
+        ".cursor/rules/project-structure.md"
+      ]
+    },
+    {
+      "name": "Frontend Best Practices",
+      "pattern": "frontend/**/*",
+      "include": [
+        ".cursor/rules/frontend.md"
+      ]
+    },
+    {
+      "name": "Backend Best Practices",
+      "pattern": "backend/**/*",
+      "include": [
+        ".cursor/rules/backend.md"
+      ]
+    },
+    {
+      "name": "React Component Rules",
+      "pattern": "frontend/src/components/**/*.tsx",
+      "include": [
+        ".cursor/rules/react-components.md"
+      ]
+    },
+    {
+      "name": "FastAPI Endpoint Rules",
+      "pattern": "backend/src/**/*.py",
+      "include": [
+        ".cursor/rules/fastapi-endpoints.md"
+      ]
+    },
+    {
+      "name": "Testing Rules",
+      "pattern": "**/*test*.**",
+      "include": [
+        ".cursor/rules/testing.md"
+      ]
+    },
+    {
+      "name": "TypeScript Rules",
+      "pattern": "frontend/**/*.{ts,tsx}",
+      "include": [
+        ".cursor/rules/typescript.md"
+      ]
+    },
+    {
+      "name": "CSS & Styling Rules",
+      "pattern": "frontend/**/*.{css,scss}",
+      "include": [
+        ".cursor/rules/styling.md"
+      ]
+    },
+    {
+      "name": "Documentation Rules",
+      "pattern": "**/*.md",
+      "include": [
+        ".cursor/rules/documentation.md"
+      ]
+    }
+  ]
+} 
