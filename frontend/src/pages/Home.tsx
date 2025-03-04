@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext.tsx'
 
 const Home = () => {
   const { user, supabase } = useAuth()
@@ -139,7 +139,7 @@ const Home = () => {
         
         <div className="md:w-1/2">
           <img
-            src="https://images.unsplash.com/photo-1560174038-594a6e2e8b28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2067&q=80"
+            src="/chess-hero.jpg"
             alt="Chess pieces"
             className="rounded-lg shadow-lg"
           />

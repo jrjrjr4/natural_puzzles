@@ -88,7 +88,7 @@ const Profile = () => {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Your Profile</h1>
         <p className="text-gray-600 dark:text-gray-300">
-          Hello, {user?.email || 'User'}! Here's your chess puzzle progress.
+          Hello, {user?.email || 'User'}! Here&apos;s your chess puzzle progress.
         </p>
       </div>
 

@@ -26,7 +26,7 @@ const Footer = () => {
               Puzzles
             </Link>
             <a 
-              href="https://github.com/yourusername/chess-puzzle-app" 
+              href="https://github.com/jrjrjr4/natural_puzzles" 
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:text-gray-900 dark:hover:text-white"
