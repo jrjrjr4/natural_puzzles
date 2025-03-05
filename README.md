@@ -8,6 +8,22 @@ This is a monorepo containing:
 - `frontend/`: React application with Tailwind CSS and chess board visualization
 - `backend/`: FastAPI server providing puzzle data and user progress tracking
 
+## Quick Start
+
+For the easiest way to start the entire application (both backend and frontend) with a single command, use:
+
+```
+chess-app
+```
+
+This command starts both servers in separate windows. To set up this command, run:
+
+```
+.\setup_commands.ps1
+```
+
+Then restart PowerShell or run `. $PROFILE` to load the new command.
+
 ## Setup Instructions
 
 ### Frontend

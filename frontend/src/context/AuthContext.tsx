@@ -1,8 +1,11 @@
 import { createContext, useContext, ReactNode } from 'react'
 import { SupabaseClient, User } from '@supabase/supabase-js'
+import { Profile } from '../types/supabase'
 
 interface AuthContextType {
   user: User | null
+  profile: Profile | null
+  loading: boolean
   supabase: SupabaseClient
 }
 

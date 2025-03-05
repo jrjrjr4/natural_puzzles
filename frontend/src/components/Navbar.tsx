@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const Navbar = () => {
-  const { user } = useAuth()
+  const { user, supabase } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
@@ -15,6 +16,15 @@ const Navbar = () => {
     return location.pathname === path
       ? 'text-primary-600 dark:text-primary-400'
       : 'text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400'
+  }
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut()
+      navigate('/')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
   }
 
   return (
@@ -76,14 +86,20 @@ const Navbar = () => {
                 <button
                   type="button"
                   className="btn btn-secondary text-sm"
+                  onClick={handleSignOut}
                 >
                   Sign Out
                 </button>
               </div>
             ) : (
-              <Link to="/" className="btn btn-primary text-sm">
-                Sign In
-              </Link>
+              <div className="flex items-center space-x-4">
+                <Link to="/login" className="btn btn-secondary text-sm">
+                  Sign In
+                </Link>
+                <Link to="/signup" className="btn btn-primary text-sm">
+                  Sign Up
+                </Link>
+              </div>
             )}
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
@@ -185,6 +201,7 @@ const Navbar = () => {
                   </div>
                   <button
                     type="button"
+                    onClick={handleSignOut}
                     className="mt-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
                   >
                     Sign Out
@@ -192,9 +209,12 @@ const Navbar = () => {
                 </div>
               </div>
             ) : (
-              <div className="px-4">
-                <Link to="/" className="btn btn-primary block text-center">
+              <div className="px-4 space-y-2">
+                <Link to="/login" className="btn btn-secondary block text-center">
                   Sign In
+                </Link>
+                <Link to="/signup" className="btn btn-primary block text-center">
+                  Sign Up
                 </Link>
               </div>
             )}
