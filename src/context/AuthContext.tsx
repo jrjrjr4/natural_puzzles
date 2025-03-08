@@ -6,11 +6,19 @@ interface User {
   email?: string;
 }
 
+// Updated Profile to match the structure in frontend
 interface Profile {
   id: string;
   user_id: string;
-  display_name?: string;
-  bio?: string;
+  username?: string | null;
+  display_name?: string | null;
+  avatar_url?: string | null;
+  bio?: string | null;
+  rating?: number;
+  puzzles_solved?: number;
+  puzzles_attempted?: number;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface AuthContextType {

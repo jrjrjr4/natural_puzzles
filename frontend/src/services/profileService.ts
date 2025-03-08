@@ -1,6 +1,14 @@
 import { Profile } from '../types/supabase';
 import { supabase } from '../lib/supabaseClient';
 
+// Define the ProfileUpdate type
+interface ProfileUpdate {
+  display_name?: string;
+  bio?: string;
+  avatar_url?: string;
+  username?: string;
+}
+
 /**
  * Service to interact with user profiles in Supabase
  */

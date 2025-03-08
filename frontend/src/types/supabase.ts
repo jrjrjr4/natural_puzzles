@@ -8,6 +8,7 @@
  */
 export interface Profile {
   id: string; // UUID
+  user_id: string; // UUID of the auth.users entry
   username: string | null;
   display_name: string | null;
   avatar_url: string | null;

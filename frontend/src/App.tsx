@@ -101,7 +101,12 @@ function App() {
   console.log("App render - User state:", user ? "User logged in" : "No user")
 
   return (
-    <AuthProvider value={{ user, profile, loading, supabase }}>
+    <AuthProvider value={{ 
+      user, 
+      profile, 
+      loading, 
+      supabase 
+    }}>
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow container mx-auto px-4 py-8">
