@@ -63,6 +63,16 @@ const Navbar = () => {
               >
                 Puzzles
               </Link>
+              <Link
+                to="/puzzle-test"
+                className={`inline-flex items-center px-1 pt-1 border-b-2 ${
+                  isActive('/puzzle-test') === 'text-primary-600 dark:text-primary-400'
+                    ? 'border-primary-500'
+                    : 'border-transparent'
+                } ${isActive('/puzzle-test')}`}
+              >
+                Puzzle Test
+              </Link>
               {user && (
                 <Link
                   to="/profile"
@@ -171,6 +181,16 @@ const Navbar = () => {
               } ${isActive('/puzzle')}`}
             >
               Puzzles
+            </Link>
+            <Link
+              to="/puzzle-test"
+              className={`block pl-3 pr-4 py-2 border-l-4 ${
+                isActive('/puzzle-test') === 'text-primary-600 dark:text-primary-400'
+                  ? 'border-primary-500 bg-primary-50 dark:bg-gray-700'
+                  : 'border-transparent'
+              } ${isActive('/puzzle-test')}`}
+            >
+              Puzzle Test
             </Link>
             {user && (
               <Link

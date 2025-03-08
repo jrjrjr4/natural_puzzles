@@ -6,3 +6,18 @@ python-dotenv==1.0.0
 pytest==7.4.3
 httpx>=0.24.0,<0.25.0
 python-jose==3.3.0
+
+# Database related
+pytest-asyncio==0.21.1  # For async testing
+databases[sqlite]==0.8.0  # Database support
+SQLAlchemy==2.0.23  # ORM
+alembic==1.12.1  # Migrations
+
+# Development tools
+black==23.11.0  # Code formatting
+isort==5.12.0  # Import sorting
+flake8==6.1.0  # Linting
+
+# Testing
+pytest-cov==4.1.0  # Test coverage
+pytest-mock==3.12.0  # Mocking in tests

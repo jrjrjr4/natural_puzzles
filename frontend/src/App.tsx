@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { createClient, SupabaseClient, User } from '@supabase/supabase-js'
+import { User } from '@supabase/supabase-js'
 import './index.css'
 
 // Pages
@@ -10,6 +10,8 @@ import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
+import ProfileTest from './components/ProfileTest'
+import PuzzleTest from './components/PuzzleTest'
 
 // Components
 import Navbar from './components/Navbar'
@@ -24,10 +26,8 @@ import { Profile as ProfileType } from './types/supabase'
 // Services
 import profileService from './services/profileService'
 
-// Create Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-supabase-url.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-supabase-anon-key'
-const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKey)
+// Supabase client
+import supabase from './lib/supabaseClient'
 
 function App() {
   const [user, setUser] = useState<User | null>(null)
@@ -35,21 +35,38 @@ function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Safety timeout to prevent infinite loading
+    const safetyTimeout = setTimeout(() => {
+      if (loading) {
+        console.log("Safety timeout triggered - forcing loading to false");
+        setLoading(false);
+      }
+    }, 5000); // 5 seconds timeout
+    
     // Check for active session on load
     const checkSession = async () => {
+      console.log("Checking session...")
       try {
         const { data: { session } } = await supabase.auth.getSession()
+        console.log("Session result:", session ? "Found session" : "No session")
         
         if (session) {
           setUser(session.user)
           
           // Fetch the user's profile
-          const userProfile = await profileService.getProfile(session.user.id)
-          setProfile(userProfile)
+          console.log("Fetching profile for user:", session.user.id)
+          try {
+            const userProfile = await profileService.getProfile(session.user.id)
+            console.log("Profile result:", userProfile ? "Profile found" : "No profile found")
+            setProfile(userProfile)
+          } catch (profileError) {
+            console.error("Error fetching profile:", profileError)
+          }
         }
       } catch (error) {
         console.error('Error checking session:', error)
       } finally {
+        console.log("Setting loading to false")
         setLoading(false)
       }
     }
@@ -73,34 +90,37 @@ function App() {
       }
     )
 
-    // Cleanup subscription
+    // Clean up the timeout on unmount
     return () => {
+      clearTimeout(safetyTimeout);
       subscription.unsubscribe()
     }
   }, [])
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
-      </div>
-    )
-  }
+  console.log("App render - Loading state:", loading)
+  console.log("App render - User state:", user ? "User logged in" : "No user")
 
   return (
     <AuthProvider value={{ user, profile, loading, supabase }}>
-      <div className="flex flex-col min-h-screen">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow container mx-auto px-4 py-8">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/puzzle" element={<Puzzle />} />
-            <Route path="/puzzle/:id" element={<Puzzle />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : (
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/puzzle/:id" element={<Puzzle />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/profile-test" element={<ProfileTest />} />
+              <Route path="/puzzle-test" element={<PuzzleTest />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          )}
         </main>
         <Footer />
       </div>

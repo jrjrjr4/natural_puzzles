@@ -1,49 +1,80 @@
-# Supabase Integration
+# Supabase Setup Instructions
 
-This directory contains configuration files and SQL migrations for our Supabase project.
+This directory contains SQL scripts for setting up and managing your Supabase database for the Chess Puzzle app.
 
-## Structure
+## Directory Structure
 
-- `/migrations`: SQL migration files to set up the database schema
-  - See the README in that directory for more details on applying migrations
+- `migrations/`: SQL scripts to create or modify database tables
+- `seed_data/`: SQL scripts to populate the database with initial data
 
-## Setup Instructions
+## How to Apply These Scripts
 
-### 1. Create a Supabase Project
+### Option 1: Using the Supabase Dashboard (Recommended for Development)
 
-1. Go to [Supabase](https://supabase.com/) and sign in or create an account
-2. Create a new project with a name like "chess-puzzles-app"
-3. Note down the URL and anon key from the API settings
+1. Log in to the [Supabase Dashboard](https://app.supabase.io/)
+2. Select your project
+3. Go to the SQL Editor
+4. Copy and paste the contents of the SQL files from the `migrations/` directory
+5. Run the scripts in order
+6. After running the migration scripts, run the seed data scripts from the `seed_data/` directory
 
-### 2. Configure Environment Variables
+### Option 2: Using the Supabase CLI (Recommended for Production)
 
-Create a `.env` file in the frontend directory with the following variables:
+1. Install the Supabase CLI if not already installed:
+   ```
+   npm install -g supabase
+   ```
 
-```
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
+2. Log in to Supabase:
+   ```
+   supabase login
+   ```
 
-### 3. Apply Database Migrations
+3. Link your project:
+   ```
+   supabase link --project-ref YOUR_PROJECT_REF
+   ```
 
-Apply the SQL migrations as described in the migrations directory README.
+4. Apply migrations:
+   ```
+   supabase db push
+   ```
 
-### 4. Configure Authentication
+## Database Schema
 
-In the Supabase dashboard:
-1. Go to Authentication → Settings
-2. Configure Email auth (enabled by default)
-3. Optionally configure additional providers (Google, GitHub, etc.)
+### Profiles Table
 
-### 5. Testing the Setup
+Extends the default Supabase auth.users table with additional user information:
+- `id`: UUID (matches the auth.users id)
+- `username`: Optional username
+- `display_name`: Optional display name
+- `avatar_url`: Optional URL to user's avatar
+- `bio`: Optional user bio
+- `rating`: User's puzzle rating
+- `puzzles_solved`: Count of puzzles solved by the user
+- `puzzles_attempted`: Count of puzzles attempted by the user
+- `created_at`: Timestamp of when the profile was created
+- `updated_at`: Timestamp of when the profile was last updated
 
-After completing the above steps, you should be able to:
-1. Register and log in using Supabase Auth
-2. Have user profiles automatically created
-3. Update user profiles with the appropriate permissions
+### Puzzles Table
 
-## Important Notes
+Stores chess puzzles:
+- `id`: UUID
+- `fen`: FEN notation of the puzzle position
+- `moves`: PGN or algebraic notation of the solution moves
+- `difficulty`: Difficulty level (1-5)
+- `theme`: Puzzle theme (e.g., "mate in 2", "fork", "pin")
+- `description`: Optional description or hints
+- `popularity`: Number of times the puzzle has been attempted
+- `success_rate`: Percentage of successful solutions
+- `source`: Optional source of the puzzle
+- `created_at`: Timestamp of when the puzzle was created
+- `updated_at`: Timestamp of when the puzzle was last updated
 
-- Supabase provides built-in Row Level Security (RLS) which is configured in our migrations
-- All tables in the `public` schema have RLS enabled by default
-- We're using triggers to auto-create user profiles when a user signs up 
+## Security and RLS Policies
+
+The scripts include Row Level Security (RLS) policies:
+
+- Puzzles:
+  - Anyone can read puzzles
+  - Only admins can insert, update, or delete puzzles 

@@ -1,13 +1,57 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { profileService } from '../services/profileService'
+import supabase from '../lib/supabaseClient'
 
 const Home = () => {
-  const { user, supabase } = useAuth()
+  const { user } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
+  // Profile testing
+  const [profile, setProfile] = useState<any>(null)
+  const [profileMessage, setProfileMessage] = useState<string>('')
+
+  // Load profile when user is available
+  useEffect(() => {
+    if (user) {
+      console.log("Home: User available, loading profile...");
+      loadProfile();
+    } else {
+      console.log("Home: No user available");
+    }
+  }, [user]);
+
+  const loadProfile = async () => {
+    try {
+      console.log("Home: Calling profileService.getCurrentProfile...");
+      const data = await profileService.getCurrentProfile();
+      console.log("Home: Profile loaded result:", data ? "Success" : "No profile");
+      setProfile(data);
+      setProfileMessage(data ? 'Profile loaded successfully' : 'No profile found');
+    } catch (error: any) {
+      console.error("Home: Error loading profile:", error);
+      setProfileMessage(`Error loading profile: ${error.message}`);
+    }
+  }
+
+  const updateBio = async () => {
+    if (!user) return
+    
+    try {
+      const updatedProfile = await profileService.updateProfile(user.id, {
+        bio: "Chess enthusiast and puzzle solver!",
+        display_name: "Chess Master"
+      })
+      setProfile(updatedProfile)
+      setProfileMessage('Profile updated successfully')
+    } catch (error: any) {
+      setProfileMessage(`Error updating profile: ${error.message}`)
+    }
+  }
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -61,9 +105,41 @@ const Home = () => {
           </p>
           
           {user ? (
-            <Link to="/puzzle" className="btn btn-primary inline-block">
-              Start Solving Puzzles
-            </Link>
+            <>
+              <Link to="/puzzle" className="btn btn-primary inline-block">
+                Start Solving Puzzles
+              </Link>
+              
+              {/* Profile testing section */}
+              <div className="mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+                <h2 className="text-xl font-semibold mb-2">Profile Test</h2>
+                <p className="text-sm mb-4">{profileMessage}</p>
+                
+                {profile && (
+                  <div className="mb-4">
+                    <h3 className="font-medium mb-1">Current Profile:</h3>
+                    <pre className="bg-gray-100 dark:bg-gray-900 p-2 rounded text-xs overflow-auto">
+                      {JSON.stringify(profile, null, 2)}
+                    </pre>
+                  </div>
+                )}
+                
+                <div className="flex space-x-2">
+                  <button 
+                    onClick={loadProfile} 
+                    className="btn btn-sm btn-secondary"
+                  >
+                    Refresh Profile
+                  </button>
+                  <button 
+                    onClick={updateBio} 
+                    className="btn btn-sm btn-primary"
+                  >
+                    Update Bio
+                  </button>
+                </div>
+              </div>
+            </>
           ) : (
             <div className="space-y-6">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">

@@ -21,7 +21,12 @@ describe('Home Component', () => {
   test('renders the home page with sign in form when user is not logged in', () => {
     render(
       <BrowserRouter>
-        <AuthProvider value={{ user: null, supabase: {} as any }}>
+        <AuthProvider value={{ 
+          user: null, 
+          profile: null, 
+          loading: false, 
+          supabase: {} as any 
+        }}>
           <Home />
         </AuthProvider>
       </BrowserRouter>
@@ -41,7 +46,12 @@ describe('Home Component', () => {
   test('renders the features section', () => {
     render(
       <BrowserRouter>
-        <AuthProvider value={{ user: null, supabase: {} as any }}>
+        <AuthProvider value={{ 
+          user: null, 
+          profile: null, 
+          loading: false, 
+          supabase: {} as any 
+        }}>
           <Home />
         </AuthProvider>
       </BrowserRouter>
